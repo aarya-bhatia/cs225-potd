@@ -1,6 +1,7 @@
 #include "HuffmanNode.h"
 #include "HuffmanUtils.h"
 #include <sstream>
+#include <vector>
 
 using namespace std;
 
@@ -35,6 +36,10 @@ string binaryToString(string binaryString, HuffmanNode* huffmanTree) {
     HuffmanNode *current = huffmanTree;
     string res = "";
 
+    if(!current) {
+        return res;
+    }
+
     for (unsigned i = 0; i < binaryString.length(); i++)
     {
         char c = binaryString[i];
@@ -50,6 +55,12 @@ string binaryToString(string binaryString, HuffmanNode* huffmanTree) {
         else {
             current = current->right_;
         }
+    }
+
+    if (!current->right_ && !current->left_)
+    {
+        res += current->char_;
+        current = huffmanTree;
     }
 
     return res;
@@ -69,6 +80,11 @@ string stringToBinary(string charString, HuffmanNode* huffmanTree) {
     vector<char> charVec;
     vector<string> strVec;
     decrypt(huffmanTree, "", charVec, strVec);
+
+    for(unsigned i = 0; i < charVec.size(); i++)
+    {
+        std::cout << charVec[i] << ": " << strVec[i] << std::endl;
+    }
 
     stringstream ss;
 

@@ -1,6 +1,7 @@
 #include <iostream>
 #include "HuffmanNode.h"
 #include "HuffmanUtils.h"
+#include <cassert>
 using namespace std;
 
 int main() {
@@ -52,6 +53,9 @@ int main() {
   cout << "Expected String: " << expected_str << endl;
   cout << "Given Binary: " << stringToBinary(expected_str, n) << endl;
   cout << "Expected Binary: " << binary_str << endl;
+
+  assert(binary_str == stringToBinary(expected_str, n));
+  assert(expected_str == binaryToString(binary_str, n));
 
   return 0;
 }
