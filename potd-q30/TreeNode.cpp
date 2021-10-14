@@ -1,25 +1,41 @@
-#include "TreeNode.h"
 #include <cstdlib>
 #include <cmath>
+#include <unordered_map>
 
-int getHeight(TreeNode *root) {
-  if(!root) return -1;
-  return 1 + std::fmax(getHeight(root->left_), getHeight(root->right_));
-}
+#include "TreeNode.h"
 
-int getHeightBalance(TreeNode* root) {
-  if(!root) {
-    return 0;
-  }
-  return std::abs(getHeight(root->left_) - getHeight(root->right_));
-}
+static std::unordered_map<TreeNode *, int> nodeHeights;
 
-void deleteTree(TreeNode* root)
+static int height(TreeNode *node)
 {
-  if (root == NULL) return;
+  return node ? 1 + std::fmax(height(node->left_), height(node->right_)) : -1;
+}
+
+bool isHeightBalanced(TreeNode *root)
+{
+  if (!root)
+  {
+    return true;
+  }
+
+  if (nodeHeights.find(root->right_) == nodeHeights.end())
+  {
+    nodeHeights[root->right_] = height(root->right_);
+  }
+  if (nodeHeights.find(root->left_) == nodeHeights.end())
+  {
+    nodeHeights[root->left_] = height(root->left_);
+  }
+
+  return std::abs(nodeHeights[root->right_] - nodeHeights[root->left_]) < 2;
+}
+
+void deleteTree(TreeNode *root)
+{
+  if (root == NULL)
+    return;
   deleteTree(root->left_);
   deleteTree(root->right_);
   delete root;
   root = NULL;
 }
-
